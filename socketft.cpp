@@ -96,7 +96,11 @@ void Socket::CloseSocket()
 	if (m_s != INVALID_SOCKET)
 	{
 #ifdef USE_WINDOWS_STYLE_SOCKETS
+#if _WIN32_WINNT > _WIN32_WINNT_VISTA
+        CancelIoEx((HANDLE)m_s, nullptr);
+#else
 		CancelIo((HANDLE) m_s);
+#endif
 		CheckAndHandleError_int("closesocket", closesocket(m_s));
 #else
 		CheckAndHandleError_int("close", close(m_s));
@@ -349,7 +353,11 @@ SocketReceiver::SocketReceiver(Socket &s)
 SocketReceiver::~SocketReceiver()
 {
 #ifdef USE_WINDOWS_STYLE_SOCKETS
-	CancelIo((HANDLE) m_s.GetSocket());
+#if _WIN32_WINNT > _WIN32_WINNT_VISTA
+    CancelIoEx((HANDLE)m_s.GetSocket(), nullptr);
+#else
+    CancelIo((HANDLE)m_s);
+#endif
 #endif
 }
 
@@ -431,7 +439,11 @@ SocketSender::SocketSender(Socket &s)
 SocketSender::~SocketSender()
 {
 #ifdef USE_WINDOWS_STYLE_SOCKETS
-	CancelIo((HANDLE) m_s.GetSocket());
+#if _WIN32_WINNT > _WIN32_WINNT_VISTA
+    CancelIoEx((HANDLE)m_s.GetSocket(), nullptr);
+#else
+    CancelIo((HANDLE)m_s);
+#endif
 #endif
 }
 

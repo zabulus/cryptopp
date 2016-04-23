@@ -11,8 +11,10 @@
 #include "smartptr.h"
 #include "misc.h"
 
-#ifdef CRYPTOPP_WIN32_AVAILABLE
+#if defined(CRYPTOPP_WIN32_AVAILABLE) || defined(CRYPTOPP_WIN_UWP_AVAILABLE)
+#ifndef CRYPTOPP_WIN_UWP_AVAILABLE
 #define _WIN32_WINNT 0x0400
+#endif
 #include <windows.h>
 
 #if defined(_MSC_VER) && _MSC_VER >= 1400
@@ -41,7 +43,7 @@ unsigned long g_macFileLocation = 0;
 static const byte s_moduleMac[CryptoPP::HMAC<CryptoPP::SHA1>::DIGESTSIZE] = CRYPTOPP_DUMMY_DLL_MAC;
 CRYPTOPP_COMPILE_ASSERT(sizeof(s_moduleMac) == CryptoPP::SHA1::DIGESTSIZE);
 
-#ifdef CRYPTOPP_WIN32_AVAILABLE
+#if defined(CRYPTOPP_WIN32_AVAILABLE) || defined(CRYPTOPP_WIN_UWP_AVAILABLE)
 static HMODULE s_hModule = NULL;
 #endif
 
@@ -577,7 +579,7 @@ done:
 	return;
 }
 
-#ifdef CRYPTOPP_WIN32_AVAILABLE
+#if defined(CRYPTOPP_WIN32_AVAILABLE) || defined(CRYPTOPP_WIN_UWP_AVAILABLE)
 
 void DoDllPowerUpSelfTest()
 {
@@ -595,7 +597,7 @@ void DoDllPowerUpSelfTest()
 
 NAMESPACE_END
 
-#ifdef CRYPTOPP_WIN32_AVAILABLE
+#if defined(CRYPTOPP_WIN32_AVAILABLE) || defined(CRYPTOPP_WIN_UWP_AVAILABLE)
 
 // DllMain needs to be in the global namespace
 BOOL APIENTRY DllMain(HANDLE hModule, 

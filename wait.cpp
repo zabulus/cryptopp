@@ -142,7 +142,7 @@ WaitObjectContainer::~WaitObjectContainer()
 				threadHandles[i] = thread.threadHandle;
 			}
 
-			BOOL bResult = PulseEvent(m_startWaiting);
+			BOOL bResult = SetEvent(m_startWaiting);
 			assert(bResult != 0); CRYPTOPP_UNUSED(bResult);
 	
 			// Enterprise Analysis warning
@@ -300,7 +300,7 @@ bool WaitObjectContainer::Wait(unsigned long milliseconds)
 		}
 
 		ResetEvent(m_stopWaiting);
-		PulseEvent(m_startWaiting);
+		SetEvent(m_startWaiting);
 
 		DWORD result = ::WaitForSingleObject(m_stopWaiting, milliseconds);
 		assert(result != WAIT_FAILED);

@@ -60,17 +60,21 @@ MicrosoftCryptoProvider::~MicrosoftCryptoProvider()
 
 NonblockingRng::NonblockingRng()
 {
-#ifndef CRYPTOPP_WIN32_AVAILABLE
+#ifdef CRYPTOPP_UNIX_AVAILABLE
 	m_fd = open("/dev/urandom",O_RDONLY);
 	if (m_fd == -1)
 		throw OS_RNG_Err("open /dev/urandom");
+#else
+#   error Not implemented NonblockingRng
 #endif
 }
 
 NonblockingRng::~NonblockingRng()
 {
-#ifndef CRYPTOPP_WIN32_AVAILABLE
+#ifdef CRYPTOPP_UNIX_AVAILABLE
 	close(m_fd);
+#else
+#   error Not implemented NonblockingRng
 #endif
 }
 
@@ -82,7 +86,7 @@ void NonblockingRng::GenerateBlock(byte *output, size_t size)
 #	endif
 	if (!CryptGenRandom(m_Provider.GetProviderHandle(), (DWORD)size, output))
 		throw OS_RNG_Err("CryptGenRandom");
-#else
+#elif CRYPTOPP_UNIX_AVAILABLE
 	while (size)
 	{
 		ssize_t len = read(m_fd, output, size);
@@ -99,6 +103,8 @@ void NonblockingRng::GenerateBlock(byte *output, size_t size)
 		output += len;
 		size -= len;
 	}
+#else
+#   error Not implemented NonblockingRng
 #endif
 }
 
