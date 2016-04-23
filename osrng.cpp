@@ -111,7 +111,7 @@ void NonblockingRng::GenerateBlock(byte *output, size_t size)
 #elif defined(CRYPTOPP_WIN_UWP_AVAILABLE)
     if (STATUS_SUCCESS != BCryptGenRandom(m_Provider.GetAlgorithmHandle(), output, size, 0))
         throw OS_RNG_Err("CryptGenRandom");
-#elif CRYPTOPP_UNIX_AVAILABLE
+#elif defined(CRYPTOPP_UNIX_AVAILABLE)
 	while (size)
 	{
 		ssize_t len = read(m_fd, output, size);
