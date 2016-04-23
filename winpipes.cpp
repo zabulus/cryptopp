@@ -129,7 +129,11 @@ unsigned int WindowsPipeReceiver::GetReceiveResult()
 	if (m_resultPending)
 	{
 		const HANDLE h = GetHandle();
+#if _WIN32_WINNT > _WIN32_WINNT_VISTA
+        if(::GetOverlappedResultEx(h, &m_overlapped, &m_lastResult, INFINITE, false))
+#else
 		if (GetOverlappedResult(h, &m_overlapped, &m_lastResult, false))
+#endif
 		{
 			if (m_lastResult == 0)
 				m_eofReceived = true;
@@ -194,7 +198,11 @@ unsigned int WindowsPipeSender::GetSendResult()
 	if (m_resultPending)
 	{
 		const HANDLE h = GetHandle();
-		BOOL result = GetOverlappedResult(h, &m_overlapped, &m_lastResult, false);
+#if _WIN32_WINNT > _WIN32_WINNT_VISTA
+        BOOL result = ::GetOverlappedResultEx(h, &m_overlapped, &m_lastResult, INFINITE, false);
+#else
+        BOOL result = GetOverlappedResult(h, &m_overlapped, &m_lastResult, false);
+#endif
 		CheckAndHandleError("GetOverlappedResult", result);
 		m_resultPending = false;
 	}

@@ -10,6 +10,10 @@ include(GNUInstallDirs)
 include(TestBigEndian)
 include(CheckCXXSymbolExists)
 
+if((CMAKE_SYSTEM_NAME MATCHES "WindowsStore") AND (CMAKE_SYSTEM_VERSION MATCHES "10.0"))
+	set(UWP 1)
+endif()
+
 #============================================================================
 # Settable options
 #============================================================================
@@ -132,6 +136,9 @@ endif()
 if(WIN32)
 	target_link_libraries(cryptopp-static ws2_32)
 	target_link_libraries(cryptopp-shared ws2_32)
+	if(UWP)
+		target_link_libraries(cryptopp-shared kernel32)
+	endif()
 endif()
 
 find_package(Threads)
