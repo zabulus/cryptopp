@@ -33,6 +33,29 @@ public:
 
 #ifdef NONBLOCKING_RNG_AVAILABLE
 
+#ifdef CRYPTOPP_WIN_UWP_AVAILABLE
+
+#if defined(_MSC_VER)
+#  pragma comment(lib, "Bcrypt.lib")
+#endif
+//! \class MicrosoftCryptoProvider
+//! \brief Wrapper for Microsoft crypto service provider
+class CRYPTOPP_DLL MicrosoftCryptoProvider
+{	
+public:
+    //! \brief Construct a MicrosoftCryptoProvider
+    MicrosoftCryptoProvider();
+    ~MicrosoftCryptoProvider();
+
+    typedef void* BCRYPT_ALG_HANDLE;
+
+    BCRYPT_ALG_HANDLE GetAlgorithmHandle() const { return m_algorithmHandle; }
+private:
+    BCRYPT_ALG_HANDLE m_algorithmHandle;
+};
+
+#endif
+
 #ifdef CRYPTOPP_WIN32_AVAILABLE
 //! \class MicrosoftCryptoProvider
 //! \brief Wrapper for Microsoft crypto service provider
@@ -90,7 +113,9 @@ protected:
 #	ifndef WORKAROUND_MS_BUG_Q258000
 		MicrosoftCryptoProvider m_Provider;
 #	endif
-#else
+#elif defined(CRYPTOPP_WIN_UWP_AVAILABLE)
+    MicrosoftCryptoProvider m_Provider;
+#elif defined(CRYPTOPP_UNIX_AVAILABLE)
 	int m_fd;
 #endif
 };

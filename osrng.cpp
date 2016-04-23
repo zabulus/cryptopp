@@ -20,6 +20,11 @@
 #include <wincrypt.h>
 #endif
 
+#ifdef CRYPTOPP_WIN_UWP_AVAILABLE
+#include <windows.h>
+#include <Bcrypt.h>
+#endif
+
 #ifdef CRYPTOPP_UNIX_AVAILABLE
 #include <errno.h>
 #include <fcntl.h>
@@ -58,14 +63,33 @@ MicrosoftCryptoProvider::~MicrosoftCryptoProvider()
 
 #endif
 
+#ifdef CRYPTOPP_WIN_UWP_AVAILABLE
+
+#ifndef STATUS_SUCCESS
+#define STATUS_SUCCESS 0
+#endif
+
+MicrosoftCryptoProvider::MicrosoftCryptoProvider()
+{
+    if (STATUS_SUCCESS != BCryptOpenAlgorithmProvider(&m_algorithmHandle, BCRYPT_RSA_ALGORITHM, nullptr, 0))
+    {
+        throw OS_RNG_Err("BCryptOpenAlgorithmProvider");
+    }
+}
+
+MicrosoftCryptoProvider::~MicrosoftCryptoProvider()
+{
+    BCryptCloseAlgorithmProvider(m_algorithmHandle, 0);
+}
+
+#endif
+
 NonblockingRng::NonblockingRng()
 {
 #ifdef CRYPTOPP_UNIX_AVAILABLE
 	m_fd = open("/dev/urandom",O_RDONLY);
 	if (m_fd == -1)
 		throw OS_RNG_Err("open /dev/urandom");
-#else
-#   error Not implemented NonblockingRng
 #endif
 }
 
@@ -73,8 +97,6 @@ NonblockingRng::~NonblockingRng()
 {
 #ifdef CRYPTOPP_UNIX_AVAILABLE
 	close(m_fd);
-#else
-#   error Not implemented NonblockingRng
 #endif
 }
 
@@ -86,6 +108,9 @@ void NonblockingRng::GenerateBlock(byte *output, size_t size)
 #	endif
 	if (!CryptGenRandom(m_Provider.GetProviderHandle(), (DWORD)size, output))
 		throw OS_RNG_Err("CryptGenRandom");
+#elif defined(CRYPTOPP_WIN_UWP_AVAILABLE)
+    if (STATUS_SUCCESS != BCryptGenRandom(m_Provider.GetAlgorithmHandle(), output, size, 0))
+        throw OS_RNG_Err("CryptGenRandom");
 #elif CRYPTOPP_UNIX_AVAILABLE
 	while (size)
 	{
