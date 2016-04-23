@@ -511,16 +511,14 @@ NAMESPACE_END
 #ifndef NO_OS_DEPENDENCE
 
 #if defined(_WIN32) || defined(__CYGWIN__)
-#define CRYPTOPP_WIN32_AVAILABLE
-#endif
-
-#if (defined(_WIN32) || defined(__CYGWIN__)) && defined(WINAPI_FAMILY)
-#define CRYPTOPP_WIN_UWP_AVAILABLE
-#endif
-
-#if defined(_WIN32) && defined(WINAPI_FAMILY)
-#   if !defined(WINAPI_PARTITION_DESKTOP)
-#      undef CRYPTOPP_WIN32_AVAILABLE
+#   if defined(WINAPI_FAMILY)
+#       if defined(WINAPI_PARTITION_DESKTOP)
+#           define CRYPTOPP_WIN32_AVAILABLE
+#       else
+#           define CRYPTOPP_WIN_UWP_AVAILABLE
+#       endif
+#   else
+#       define CRYPTOPP_WIN32_AVAILABLE
 #   endif
 #endif
 
@@ -558,7 +556,7 @@ NAMESPACE_END
 #	define WINDOWS_PIPES_AVAILABLE
 #endif
 
-#if (defined(CRYPTOPP_WIN32_AVAILABLE) || defined(CRYPTOPP_WIN_UWP_AVAILABLE)) && defined(USE_MS_CRYPTOAPI)
+#if defined(CRYPTOPP_WIN32_AVAILABLE) && defined(USE_MS_CRYPTOAPI)
 #	define NONBLOCKING_RNG_AVAILABLE
 #	define OS_RNG_AVAILABLE
 #endif
