@@ -890,7 +890,7 @@ bool TestOS_RNG()
 	return pass;
 }
 
-#ifdef NO_OS_DEPENDENCE
+#if defined(NO_OS_DEPENDENCE) || !defined(OS_RNG_AVAILABLE)
 bool TestAutoSeeded()
 {
 	return true;
