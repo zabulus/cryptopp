@@ -1,0 +1,79 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0">
+  <!--Import Project="configuration.props" Condition=" '$(ConfigurationPropsImported)' == '' "/ --> 
+  <ItemGroup>
+    <CryptoProjects Include="$(SolutionDir)cryptlib.vcxproj" />
+    <CryptoProjects Include="$(SolutionDir)cryptest.vcxproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <CryptoDllProjects Include="$(SolutionDir)cryptdll.vcxproj" />
+    <CryptoDllProjects Include="$(SolutionDir)dlltest.vcxproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <CryptoConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </CryptoConfiguration>
+    <CryptoConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </CryptoConfiguration>
+    <CryptoConfiguration Include="DLL-Import Debug|Win32">
+      <Configuration>DLL-Import Debug</Configuration>
+      <Platform>Win32</Platform>
+    </CryptoConfiguration>
+    <CryptoConfiguration Include="DLL-Import Debug|x64">
+      <Configuration>DLL-Import Debug</Configuration>
+      <Platform>x64</Platform>
+    </CryptoConfiguration>
+    <CryptoConfiguration Include="DLL-Import Release|Win32">
+      <Configuration>DLL-Import Release</Configuration>
+      <Platform>Win32</Platform>
+    </CryptoConfiguration>
+    <CryptoConfiguration Include="DLL-Import Release|x64">
+      <Configuration>DLL-Import Release</Configuration>
+      <Platform>x64</Platform>
+    </CryptoConfiguration>
+    <CryptoConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </CryptoConfiguration>
+    <CryptoConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </CryptoConfiguration>
+  </ItemGroup>  
+  <ItemGroup>
+    <CryptoDllConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </CryptoDllConfiguration>
+    <CryptoDllConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </CryptoDllConfiguration>
+    <CryptoDllConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </CryptoDllConfiguration>
+    <CryptoDllConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </CryptoDllConfiguration>
+  </ItemGroup>
+  <Target Name="BuildLibrary">
+    <MSBuild 
+		Projects="@(CryptoProjects)" 
+		BuildInParallel="false" 
+		Properties="Configuration=%(CryptoConfiguration.Configuration);Platform=%(CryptoConfiguration.Platform);PreprocessorDefinitions=$(PreprocessorDefinitions)" 
+		Targets="Build" 
+		ToolsVersion="14.0" />
+  </Target>
+  <Target Name="BuildDynamicLibrary">
+    <MSBuild 
+		Projects="@(CryptoDllProjects)" 
+		BuildInParallel="false" 
+		Properties="Configuration=%(CryptoDllConfiguration.Configuration);Platform=%(CryptoDllConfiguration.Platform);PreprocessorDefinitions=$(PreprocessorDefinitions)" 
+		Targets="Build" 
+		ToolsVersion="14.0" />
+  </Target>
+</Project>
