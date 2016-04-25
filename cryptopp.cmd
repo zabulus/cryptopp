@@ -1,8 +1,6 @@
 SETLOCAL
 SET SolutionDir=%CD%\
-msbuild cryptopp.proj /t:BuildLibrary /verbosity:diag /p:PreprocessorDefinitions=CRYPTOPP_NO_UNALIGNED_DATA_ACCESS
-if %errorlevel% equ 1 exit /b %errorlevel%
-msbuild cryptopp.proj /t:BuildDynamicLibrary /verbosity:diag /p:PreprocessorDefinitions=CRYPTOPP_NO_UNALIGNED_DATA_ACCESS
+msbuild cryptopp.proj /t:BuildAll /verbosity:d
 if %errorlevel% equ 1 exit /b %errorlevel%
 
 FOR %%F IN (Win32\DLL_Output\Debug,Win32\DLL_Output\Release,x64\DLL_Output\Debug,x64\DLL_Output\Release) DO (

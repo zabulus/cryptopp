@@ -1,12 +1,16 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0">
   <!--Import Project="configuration.props" Condition=" '$(ConfigurationPropsImported)' == '' "/ --> 
   <ItemGroup>
-    <CryptoProjects Include="$(SolutionDir)cryptlib.vcxproj" />
-    <CryptoProjects Include="$(SolutionDir)cryptest.vcxproj" />
+    <CryptoProject Include="$(SolutionDir)cryptlib.vcxproj" />
   </ItemGroup>
   <ItemGroup>
-    <CryptoDllProjects Include="$(SolutionDir)cryptdll.vcxproj" />
-    <CryptoDllProjects Include="$(SolutionDir)dlltest.vcxproj" />
+    <CryptoTestProject Include="$(SolutionDir)cryptest.vcxproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <CryptoDllProject Include="$(SolutionDir)cryptdll.vcxproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <CryptoDllTestProject Include="$(SolutionDir)dlltest.vcxproj" />
   </ItemGroup>
   <ItemGroup>
     <CryptoConfiguration Include="Debug|Win32">
@@ -25,22 +29,22 @@
       <Configuration>DLL-Import Debug</Configuration>
       <Platform>x64</Platform>
     </CryptoConfiguration>
-    <CryptoConfiguration Include="DLL-Import Release|Win32">
+    <CryptoConfiguration2 Include="DLL-Import Release|Win32">
       <Configuration>DLL-Import Release</Configuration>
       <Platform>Win32</Platform>
-    </CryptoConfiguration>
-    <CryptoConfiguration Include="DLL-Import Release|x64">
+    </CryptoConfiguration2>
+    <CryptoConfiguration2 Include="DLL-Import Release|x64">
       <Configuration>DLL-Import Release</Configuration>
       <Platform>x64</Platform>
-    </CryptoConfiguration>
-    <CryptoConfiguration Include="Release|Win32">
+    </CryptoConfiguration2>
+    <CryptoConfiguration2 Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
-    </CryptoConfiguration>
-    <CryptoConfiguration Include="Release|x64">
+    </CryptoConfiguration2>
+    <CryptoConfiguration2 Include="Release|x64">
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
-    </CryptoConfiguration>
+    </CryptoConfiguration2>
   </ItemGroup>  
   <ItemGroup>
     <CryptoDllConfiguration Include="Debug|Win32">
@@ -62,18 +66,43 @@
   </ItemGroup>
   <Target Name="BuildLibrary">
     <MSBuild 
-		Projects="@(CryptoProjects)" 
+		Projects="@(CryptoProject)" 
 		BuildInParallel="false" 
 		Properties="Configuration=%(CryptoConfiguration.Configuration);Platform=%(CryptoConfiguration.Platform);PreprocessorDefinitions=$(PreprocessorDefinitions)" 
 		Targets="Build" 
 		ToolsVersion="14.0" />
   </Target>
-  <Target Name="BuildDynamicLibrary">
+  <Target Name="BuildTest" DependsOnTargets="BuildLibrary">
     <MSBuild 
-		Projects="@(CryptoDllProjects)" 
+		Projects="@(CryptoTestProject)" 
+		BuildInParallel="false" 
+		Properties="Configuration=%(CryptoConfiguration.Configuration);Platform=%(CryptoConfiguration.Platform);PreprocessorDefinitions=$(PreprocessorDefinitions)" 
+		Targets="Build" 
+		ToolsVersion="14.0" />
+  </Target>  
+  <Target Name="BuildDll" DependsOnTargets="BuildTest">
+    <MSBuild 
+		Projects="@(CryptoDllProject)" 
 		BuildInParallel="false" 
 		Properties="Configuration=%(CryptoDllConfiguration.Configuration);Platform=%(CryptoDllConfiguration.Platform);PreprocessorDefinitions=$(PreprocessorDefinitions)" 
 		Targets="Build" 
 		ToolsVersion="14.0" />
   </Target>
+  <Target Name="BuildTest2" DependsOnTargets="BuildDll">
+    <MSBuild 
+		Projects="@(CryptoTestProject)" 
+		BuildInParallel="false" 
+		Properties="Configuration=%(CryptoConfiguration2.Configuration);Platform=%(CryptoConfiguration2.Platform);PreprocessorDefinitions=$(PreprocessorDefinitions)" 
+		Targets="Build" 
+		ToolsVersion="14.0" />
+  </Target>  
+  <Target Name="BuildDllTest" DependsOnTargets="BuildDll">
+    <MSBuild 
+		Projects="@(CryptoDllTestProject)" 
+		BuildInParallel="false" 
+		Properties="Configuration=%(CryptoDllConfiguration.Configuration);Platform=%(CryptoDllConfiguration.Platform);PreprocessorDefinitions=$(PreprocessorDefinitions)" 
+		Targets="Build" 
+		ToolsVersion="14.0" />
+  </Target>
+  <Target Name="BuildAll" DependsOnTargets="BuildDllTest;BuildTest;BuildTest2" />
 </Project>
