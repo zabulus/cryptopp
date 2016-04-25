@@ -21,14 +21,23 @@
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
     </CryptoConfiguration>
-    <CryptoConfiguration Include="DLL-Import Debug|Win32">
-      <Configuration>DLL-Import Debug</Configuration>
+    <CryptoConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
     </CryptoConfiguration>
-    <CryptoConfiguration Include="DLL-Import Debug|x64">
-      <Configuration>DLL-Import Debug</Configuration>
+    <CryptoConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </CryptoConfiguration>
+    
+    <CryptoConfiguration2 Include="DLL-Import Debug|Win32">
+      <Configuration>DLL-Import Debug</Configuration>
+      <Platform>Win32</Platform>
+    </CryptoConfiguration2>
+    <CryptoConfiguration2 Include="DLL-Import Debug|x64">
+      <Configuration>DLL-Import Debug</Configuration>
+      <Platform>x64</Platform>
+    </CryptoConfiguration2>
     <CryptoConfiguration2 Include="DLL-Import Release|Win32">
       <Configuration>DLL-Import Release</Configuration>
       <Platform>Win32</Platform>
@@ -37,14 +46,7 @@
       <Configuration>DLL-Import Release</Configuration>
       <Platform>x64</Platform>
     </CryptoConfiguration2>
-    <CryptoConfiguration2 Include="Release|Win32">
-      <Configuration>Release</Configuration>
-      <Platform>Win32</Platform>
-    </CryptoConfiguration2>
-    <CryptoConfiguration2 Include="Release|x64">
-      <Configuration>Release</Configuration>
-      <Platform>x64</Platform>
-    </CryptoConfiguration2>
+
   </ItemGroup>  
   <ItemGroup>
     <CryptoDllConfiguration Include="Debug|Win32">
@@ -72,6 +74,14 @@
 		Targets="Build" 
 		ToolsVersion="14.0" />
   </Target>
+  <Target Name="BuildLibrary2">
+    <MSBuild 
+		Projects="@(CryptoProject)" 
+		BuildInParallel="false" 
+		Properties="Configuration=%(CryptoConfiguration2.Configuration);Platform=%(CryptoConfiguration2.Platform);PreprocessorDefinitions=$(PreprocessorDefinitions)" 
+		Targets="Build" 
+		ToolsVersion="14.0" />
+  </Target>
   <Target Name="BuildTest" DependsOnTargets="BuildLibrary">
     <MSBuild 
 		Projects="@(CryptoTestProject)" 
@@ -88,7 +98,7 @@
 		Targets="Build" 
 		ToolsVersion="14.0" />
   </Target>
-  <Target Name="BuildTest2" DependsOnTargets="BuildDll">
+  <Target Name="BuildTest2" DependsOnTargets="BuildLibrary2;BuildDll">
     <MSBuild 
 		Projects="@(CryptoTestProject)" 
 		BuildInParallel="false" 
