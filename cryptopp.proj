@@ -70,7 +70,7 @@
     <MSBuild 
 		Projects="@(CryptoProject)" 
 		BuildInParallel="false" 
-		Properties="Configuration=%(CryptoConfiguration.Configuration);Platform=%(CryptoConfiguration.Platform);PreprocessorDefinitions=$(PreprocessorDefinitions)" 
+		Properties="Configuration=%(CryptoConfiguration.Configuration);Platform=%(CryptoConfiguration.Platform);ExternalPreprocessorDefinitions=$(PreprocessorDefinitions)" 
 		Targets="Build" 
 		ToolsVersion="14.0" />
   </Target>
@@ -78,7 +78,7 @@
     <MSBuild 
 		Projects="@(CryptoProject)" 
 		BuildInParallel="false" 
-		Properties="Configuration=%(CryptoConfiguration2.Configuration);Platform=%(CryptoConfiguration2.Platform);PreprocessorDefinitions=$(PreprocessorDefinitions)" 
+		Properties="Configuration=%(CryptoConfiguration2.Configuration);Platform=%(CryptoConfiguration2.Platform);ExternalPreprocessorDefinitions=$(PreprocessorDefinitions)" 
 		Targets="Build" 
 		ToolsVersion="14.0" />
   </Target>
@@ -86,7 +86,7 @@
     <MSBuild 
 		Projects="@(CryptoTestProject)" 
 		BuildInParallel="false" 
-		Properties="Configuration=%(CryptoConfiguration.Configuration);Platform=%(CryptoConfiguration.Platform);PreprocessorDefinitions=$(PreprocessorDefinitions)" 
+		Properties="Configuration=%(CryptoConfiguration.Configuration);Platform=%(CryptoConfiguration.Platform);ExternalPreprocessorDefinitions=$(PreprocessorDefinitions)" 
 		Targets="Build" 
 		ToolsVersion="14.0" />
   </Target>  
@@ -94,7 +94,7 @@
     <MSBuild 
 		Projects="@(CryptoDllProject)" 
 		BuildInParallel="false" 
-		Properties="Configuration=%(CryptoDllConfiguration.Configuration);Platform=%(CryptoDllConfiguration.Platform);PreprocessorDefinitions=$(PreprocessorDefinitions)" 
+		Properties="Configuration=%(CryptoDllConfiguration.Configuration);Platform=%(CryptoDllConfiguration.Platform);ExternalPreprocessorDefinitions=$(PreprocessorDefinitions)" 
 		Targets="Build" 
 		ToolsVersion="14.0" />
   </Target>
@@ -102,7 +102,7 @@
     <MSBuild 
 		Projects="@(CryptoTestProject)" 
 		BuildInParallel="false" 
-		Properties="Configuration=%(CryptoConfiguration2.Configuration);Platform=%(CryptoConfiguration2.Platform);PreprocessorDefinitions=$(PreprocessorDefinitions)" 
+		Properties="Configuration=%(CryptoConfiguration2.Configuration);Platform=%(CryptoConfiguration2.Platform);ExternalPreprocessorDefinitions=$(PreprocessorDefinitions)" 
 		Targets="Build" 
 		ToolsVersion="14.0" />
   </Target>  
@@ -110,7 +110,7 @@
     <MSBuild 
 		Projects="@(CryptoDllTestProject)" 
 		BuildInParallel="false" 
-		Properties="Configuration=%(CryptoDllConfiguration.Configuration);Platform=%(CryptoDllConfiguration.Platform);PreprocessorDefinitions=$(PreprocessorDefinitions)" 
+		Properties="Configuration=%(CryptoDllConfiguration.Configuration);Platform=%(CryptoDllConfiguration.Platform);ExternalPreprocessorDefinitions=$(PreprocessorDefinitions)" 
 		Targets="Build" 
 		ToolsVersion="14.0" />
   </Target>
