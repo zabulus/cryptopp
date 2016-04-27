@@ -33,7 +33,7 @@ public:
 
 #ifdef NONBLOCKING_RNG_AVAILABLE
 
-#ifdef CRYPTOPP_WIN_UWP_AVAILABLE
+#ifdef CRYPTOPP_WINRT_AVAILABLE
 
 #if defined(_MSC_VER)
 #  pragma comment(lib, "Bcrypt.lib")
@@ -113,7 +113,7 @@ protected:
 #	ifndef WORKAROUND_MS_BUG_Q258000
 		MicrosoftCryptoProvider m_Provider;
 #	endif
-#elif defined(CRYPTOPP_WIN_UWP_AVAILABLE)
+#elif defined(CRYPTOPP_WINRT_AVAILABLE)
     MicrosoftCryptoProvider m_Provider;
 #elif defined(CRYPTOPP_UNIX_AVAILABLE)
 	int m_fd;

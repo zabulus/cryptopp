@@ -20,7 +20,7 @@
 #include <wincrypt.h>
 #endif
 
-#ifdef CRYPTOPP_WIN_UWP_AVAILABLE
+#ifdef CRYPTOPP_WINRT_AVAILABLE
 #include <windows.h>
 #include <Bcrypt.h>
 #endif
@@ -63,7 +63,7 @@ MicrosoftCryptoProvider::~MicrosoftCryptoProvider()
 
 #endif
 
-#ifdef CRYPTOPP_WIN_UWP_AVAILABLE
+#ifdef CRYPTOPP_WINRT_AVAILABLE
 
 #ifndef STATUS_SUCCESS
 #define STATUS_SUCCESS 0
@@ -108,7 +108,7 @@ void NonblockingRng::GenerateBlock(byte *output, size_t size)
 #	endif
 	if (!CryptGenRandom(m_Provider.GetProviderHandle(), (DWORD)size, output))
 		throw OS_RNG_Err("CryptGenRandom");
-#elif defined(CRYPTOPP_WIN_UWP_AVAILABLE)
+#elif defined(CRYPTOPP_WINRT_AVAILABLE)
     if (STATUS_SUCCESS != BCryptGenRandom(m_Provider.GetAlgorithmHandle(), output, size, 0))
         throw OS_RNG_Err("CryptGenRandom");
 #elif defined(CRYPTOPP_UNIX_AVAILABLE)

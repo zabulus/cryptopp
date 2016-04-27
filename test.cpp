@@ -32,7 +32,7 @@
 #include <locale>
 #include <time.h>
 
-#if defined(CRYPTOPP_WIN32_AVAILABLE) || defined(CRYPTOPP_WIN_UWP_AVAILABLE)
+#if defined(CRYPTOPP_WIN32_AVAILABLE) || defined(CRYPTOPP_WINRT_AVAILABLE)
 #include <windows.h>
 #endif
 
